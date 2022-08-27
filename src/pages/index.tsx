@@ -15,6 +15,10 @@ import {
 } from "@chakra-ui/icons";
 import { MouseEvent, useState } from "react";
 
+const color = "rgba(55, 53, 47, 0.45)";
+const selectedColor = "rgb(55, 53, 47)";
+export const selectedBgColor = "rgba(55, 53, 47, 0.08)";
+
 const items = [
   { id: "1", name: "item1" },
   { id: "2", name: "item2" },
@@ -34,11 +38,11 @@ interface IsRotate {
 const HomePage = () => {
   const [selectedId, setSelected] = useState("");
   const [isOpen, setIsOpen] = useState(true);
-  const [rotates, setRotates] = useState<IsRotate>(
+  const [isRotates, setIsRotates] = useState<IsRotate>(
     Object.assign({}, ...items.map(({ id }) => ({ [id]: false })))
   );
 
-  const handleClick = () => {
+  const handleClose = () => {
     setIsOpen(false);
   };
 
@@ -48,7 +52,7 @@ const HomePage = () => {
 
   const toggleRotate = (e: MouseEvent, id: string) => {
     e.stopPropagation();
-    setRotates({ ...rotates, [id]: !rotates[id] });
+    setIsRotates({ ...isRotates, [id]: !isRotates[id] });
   };
 
   return (
@@ -60,9 +64,9 @@ const HomePage = () => {
         p="5px"
         position="absolute"
         onClick={handleOpen}
-        color="rgba(55, 53, 47, 0.45)"
+        color={color}
         _hover={{
-          bgColor: "rgba(55, 53, 47, 0.08)",
+          bgColor: selectedBgColor,
           borderRadius: "2",
           cursor: "pointer",
         }}
@@ -84,7 +88,7 @@ const HomePage = () => {
           px="10px"
           py="2px"
           spacing="2.5"
-          _hover={{ bgColor: "rgba(55, 53, 47, 0.08)", cursor: "pointer" }}
+          _hover={{ bgColor: selectedBgColor, cursor: "pointer" }}
         >
           <Avatar w="20px" h="20px" borderRadius="3px"></Avatar>
           <Text>Default User</Text>
@@ -99,10 +103,10 @@ const HomePage = () => {
               visibility: "visible",
             }}
             _hover={{
-              bgColor: "rgba(55, 53, 47, 0.08)",
+              bgColor: selectedBgColor,
               borderRadius: "2",
             }}
-            onClick={handleClick}
+            onClick={handleClose}
           />
         </HStack>
 
@@ -113,11 +117,11 @@ const HomePage = () => {
               <HStack
                 px="10px"
                 py="2px"
-                minH="30px"
-                bgColor={id === selectedId && "rgba(55, 53, 47, 0.08)"}
-                color={id === selectedId && "rgb(55, 53, 47)"}
+                h="30px"
+                bgColor={id === selectedId && selectedBgColor}
+                color={id === selectedId && selectedColor}
                 _hover={{
-                  bgColor: "rgba(55, 53, 47, 0.08)",
+                  bgColor: selectedBgColor,
                   cursor: "pointer",
                 }}
                 borderRadius="6"
@@ -127,24 +131,24 @@ const HomePage = () => {
                   p="1px"
                   w="18px"
                   h="18px"
-                  color={"rgba(55, 53, 47, 0.45)"}
-                  transform={rotates[id] && "rotateZ(90deg)"}
+                  color={color}
+                  transform={isRotates[id] && "rotateZ(90deg)"}
                   onClick={(e) => toggleRotate(e, id)}
-                  _hover={{ bgColor: "rgba(55, 53, 47, 0.08)" }}
+                  _hover={{ bgColor: selectedBgColor }}
                 />
                 <Text>{name}</Text>
               </HStack>
-              {rotates[id] &&
+              {isRotates[id] &&
                 childItems
                   .filter(({ parentId }) => parentId === id)
                   .map(({ id, name }) => (
                     <ListItem
-                      bgColor={id === selectedId && "rgba(55, 53, 47, 0.08)"}
-                      color={id === selectedId && "rgb(55, 53, 47)"}
+                      bgColor={id === selectedId && selectedBgColor}
+                      color={id === selectedId && selectedColor}
                       key={id}
                       borderRadius="6"
                       _hover={{
-                        bgColor: "rgba(55, 53, 47, 0.08)",
+                        bgColor: selectedBgColor,
                         cursor: "pointer",
                       }}
                       minH="30px"
